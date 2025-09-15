@@ -1,44 +1,67 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 void main() {
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  List<Tab> myTab = [
+    Tab(icon: Icon(Icons.add_a_photo)),
+    Tab(icon: Icon(Icons.ac_unit_outlined)),
+    Tab(text: "Tab 3"),
+  ];
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          leading: Container(color: Colors.amber),
-          leadingWidth: 100,
-          title: Container(height: 35, color: Colors.red),
-          // titleSpacing: 0,
-          centerTitle: false,
-          actions: [
-            Container(
-              width: 50,
-              // height: 35,
-              color: Colors.purple,
+      home: DefaultTabController(
+        initialIndex: 2,
+        length: myTab.length,
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text("My Apps"),
+              bottom: TabBar(
+                labelColor: Colors.black,
+                unselectedLabelColor: Colors.green,
+                labelStyle: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  
+                ),
+                unselectedLabelStyle: TextStyle(
+                  fontWeight: FontWeight.normal
+                ),
+                // indicatorColor: Colors.black,
+                // indicatorWeight: 5,
+                // indicatorPadding: EdgeInsets.all(10),
+                indicator: BoxDecoration(
+                  color: Colors.amber,
+                  
+                  
+                  // borderRadius: BorderRadius.circular(50),
+                  border: Border(
+                    bottom: BorderSide(
+                      color: Colors.black,
+                      width: 5
+                    )
+                  )
+                ),
+                tabs: myTab,
+                ),
             ),
-          ],
-          bottom: PreferredSize(
-            preferredSize: Size.fromHeight(200),
-            child: Container(
-              width: 50,
-              height: 200,
-              color: Colors.black,
-            ),
+            body: TabBarView(
+              children:[
+              Center(
+                child: Text("Tab 1"),
+              ),
+              Center(
+                child: Text("Tab 2"),
+              ),
+              Center(
+                child: Text("Tab 3"),
+              ),
+              ]),
           ),
-          flexibleSpace: Container(
-              height: 200,
-              color: Colors.green,
-            ),
         ),
-      ),
     );
   }
 }
