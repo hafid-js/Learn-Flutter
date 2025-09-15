@@ -5,69 +5,25 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: Text("List Tile"),
+          title: Text("Image Widget"),
         ),
-        body: ListView(
-          children: [
-            ListTile(
-              contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 8),
-              title: Text("Nadia Rahayu"),
-              subtitle: Text("is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.", maxLines: 2, overflow: TextOverflow.ellipsis,),
-              leading: CircleAvatar(),
-              trailing: Text("10:00 WIB"),
-              // onTap: () {
-              //   return
-              // },
-              tileColor: Colors.pink,
-              dense: true,
-            ),
-           Divider(
-              color: Colors.black
-            ),
-            ListTile(
-              title: Text("Nadia Rahayu"),
-              subtitle: Text("This is subtitle okay..."),
-              leading: CircleAvatar(),
-              trailing: Text("10:00 WIB"),
-            ),
-            Divider(
-              color: Colors.black
-            ),
-            ListTile(
-              title: Text("Nadia Rahayu"),
-              subtitle: Text("This is subtitle okay..."),
-              leading: CircleAvatar(),
-              trailing: Text("10:00 WIB"),
-            ),
-            Divider(
-              color: Colors.black
-            ),
-            ListTile(
-              title: Text("Nadia Rahayu"),
-              subtitle: Text("This is subtitle okay..."),
-              leading: CircleAvatar(),
-              trailing: Text("10:00 WIB"),
-            ),
-            Divider(
-              color: Colors.black
-            ),
-            ListTile(
-              title: Text("Nadia Rahayu"),
-              subtitle: Text("This is subtitle okay..."),
-              leading: CircleAvatar(),
-              trailing: Text("10:00 WIB"),
-            ),
-            Divider(
-              color: Colors.black
-            ),
-          ],
+        body: Center(
+          child: Container(
+            width: 350,
+            height: 500,
+            color: Colors.pink,
+            child: Image.asset("images/image.jpg", fit: BoxFit.cover),
+            // child: Image(
+            //   fit: BoxFit.cover,
+            //   image: AssetImage("images/image.jpg")
+            //   // image: NetworkImage("https://picsum.photos/seed/picsum/350/500")
+            //   ),
+          ),
         ),
       ),
     );
