@@ -1,50 +1,48 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatefulWidget {
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  final TextEditingController myController = TextEditingController();
-
-  String hasil = "HASIL INPUT";
+class MyApp extends StatelessWidget {
+  final List<Container> myList = List.generate(90, (index) {
+    return Container(
+      // height: 50,
+      // width: 150,
+      color: Color.fromARGB(
+        255,
+        Random().nextInt(256),
+        Random().nextInt(256),
+        Random().nextInt(256),
+      ),
+    );
+  });
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(title: Text("Text Field")),
-        body: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(25.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                TextField(
-                  controller: myController,
-                  onChanged: (value) {
-                    print("ONCHANGE");
+        appBar: AppBar(title: Text("Grid View")),
 
-                   setState(() {
-                      hasil = value;
-                   });
-                  },
-                  onSubmitted: (value) {
-                    print(value);
-                  },
-                  onEditingComplete: () {
-                    print("EDIT SUCCESS");
-                  },
-                ),
-                Text(hasil),
-              ],
-            ),
-          ),
+        // body: GridView(
+        //   padding: EdgeInsets.all(10),
+        //   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        //     crossAxisCount: 3,
+        //     crossAxisSpacing: 10,
+        //     mainAxisSpacing: 10,
+        //     childAspectRatio: 4/3
+        //   ),
+        //   children: myList,
+        // ),
+        body: GridView.count(
+          childAspectRatio: 3,
+          crossAxisCount: 3,
+          crossAxisSpacing: 10,
+          mainAxisSpacing: 10,
+          padding: EdgeInsets.all(10),
+          children: myList,
         ),
       ),
     );
