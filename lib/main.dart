@@ -1,75 +1,55 @@
-
 import 'package:flutter/material.dart';
 import 'package:learn_flutter_1/page_satu.dart';
 import 'package:learn_flutter_1/settings_page.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(MyHome());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
- 
+class MyHome extends StatefulWidget {
+  const MyHome({super.key});
+
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: MyHomePage(),
-    );
-  }
+  State<MyHome> createState() => _MyHomeState();
 }
 
-class MyHomePage extends StatelessWidget {
-  const MyHomePage({super.key});
-
+class _MyHomeState extends State<MyHome> {
+  bool statusSwitch = false;
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(
-          title: Text("Drawer"),
-        ),
-        drawer: Drawer(
+        appBar: AppBar(title: Text("Switch")),
+        body: Center(
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(
-                padding: EdgeInsets.all(20),
-                width: double.infinity,
-                height: 150,
-                color: Colors.red,
-                alignment: Alignment.bottomLeft,
-                child: Text(
-                  "Menu Pilihan",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 24
-                  ),
-                ),
+              SizedBox(
+                height: 100,
+                width: 100,
+              child : Switch.adaptive(
+                activeThumbColor: Colors.amber,
+                inactiveThumbColor: Colors.indigo,
+                activeTrackColor: Colors.green,
+                inactiveTrackColor: Colors.red,
+
+                activeThumbImage: AssetImage('/images/image.jpg'),
+                inactiveThumbImage: AssetImage('/images/image.jpg'),
+                value: statusSwitch,
+                onChanged: (value) {
+                  setState(() {
+                    statusSwitch = !statusSwitch;
+                  });
+                },
+              ),
               ),
               SizedBox(
-                height: 10,
+                height: 25,
               ),
-              ListTile(
-                onTap: () {
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(builder: (context) => PageSatu())
-                  );
-                },
-                leading: Icon(Icons.home, size: 35,),
-                title: Text("Home", style: TextStyle(
-                    fontSize: 24
-                  ),),
+              Text(
+                (statusSwitch == true) ? "Switch On" : "Switch Off",
+                style: TextStyle(fontSize: 35),
               ),
-              ListTile(
-                onTap: () {
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(builder: (context) => SettingsPage())
-                  );
-                },
-                leading: Icon(Icons.settings, size: 35,),
-                title: Text("Settings", style: TextStyle(
-                    fontSize: 24
-                  ),),
-              )
             ],
           ),
         ),
@@ -77,4 +57,3 @@ class MyHomePage extends StatelessWidget {
     );
   }
 }
-
