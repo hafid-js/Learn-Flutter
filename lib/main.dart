@@ -1,7 +1,3 @@
-import 'dart:io';
-import 'dart:math';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -15,67 +11,65 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  DateTime selectDate = DateTime.now();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Cuppertino')),
+      appBar: AppBar(title: Text('Date Picker')),
       body: Center(
-        child: ElevatedButton(
-          // onPressed: () {
-          //   child:
-          //   showDialog(
-          //     context: context,
-          //     builder: (context) {
-          //       return Platform.isIOS
-          //           ? CupertinoAlertDialog(
-          //               title: Text("Delete Item"),
-          //               content: Text("Are u sore to delete this item?"),
-          //               actions: [
-          //                 TextButton(onPressed: () {}, child: Text("No")),
-          //                 TextButton(onPressed: () {}, child: Text("Yes")),
-          //               ],
-          //             )
-          //           : AlertDialog(
-          //               title: Text("Delete Item"),
-          //               content: Text("Are u sore to delete this item?"),
-          //               actions: [
-          //                 TextButton(onPressed: () {}, child: Text("No")),
-          //                 TextButton(onPressed: () {}, child: Text("Yes")),
-          //               ],
-          //             );
-          //     },
-          //   );
-          // },
-          // child: Text("Alert Dialog"),
-          onPressed: () {
-            Platform.isAndroid
-                ? showDatePicker(
-                    context: context,
-                    initialDate: DateTime.now(),
-                    firstDate: DateTime(1998),
-                    lastDate: DateTime(2050),
-                  )
-                : showCupertinoModalPopup(
-                    context: context,
-                    builder: (context) {
-                      return Container(
-                        height: MediaQuery.of(context).size.height * 0.4,
-                        color: Colors.white,
-                        child: CupertinoDatePicker(
-                          mode: CupertinoDatePickerMode.date,
-                        onDateTimeChanged: (datetime) {
-                          print(datetime);
-                        },
-                        initialDateTime: DateTime.now(),
-                      ),
-                      );
-                    },
-                  );
-          },
-           child: Text("Cupertino Date Time"),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              selectDate.toString(),
+              style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 20),
+            OutlinedButton(
+              onPressed: () {
+                showDatePicker(
+                  context: context,
+                  initialDate: selectDate,
+                  firstDate: DateTime(1998),
+                  lastDate: DateTime(2029),
+                  // initialEntryMode: DatePickerEntryMode.input,
+                  // initialDatePickerMode: DatePickerMode.year,
+                  // selectableDayPredicate: (day) {
+                  //   if ((day.isAfter(
+                  //         DateTime.now().subtract(Duration(days: 9)))) &&
+                  //       (day.isBefore(DateTime.now().add(Duration(days: 10))))) {
+                  //     return true;
+                  //   }
+                  //   return false;
+                  // },
+
+                  helpText: "Help Text",
+                  cancelText: "Cancel Text",
+                  confirmText: "Confirm Text",
+                  fieldHintText: "Field Hint Text",
+                  fieldLabelText: "Field Label Text",
+                  // builder: (context, child) {
+                  //   return Theme(data: ThemeData.dark(), child: child);
+                  // },
+                ).then((value) {
+                  if (value != null) {
+                    setState(() {
+                      selectDate = value;
+                    });
+                  }
+                });
+              },
+              child: Text("Date Picker"),
+            ),
+          ],
         ),
-                 
       ),
     );
   }
