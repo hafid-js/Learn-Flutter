@@ -1,5 +1,7 @@
+import 'dart:io';
 import 'dart:math';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -9,54 +11,72 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(debugShowCheckedModeBanner: false, home: HomePage());
+    return MaterialApp(home: HomePage());
   }
 }
 
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final widthApp = MediaQuery.of(context).size.width;
-    final heightApp = MediaQuery.of(context).size.height;
-    final paddingTop = MediaQuery.of(context).padding.top;
-
-    final myAppBar = AppBar(title: Text("Fitted Box"));
-
-    final heightBody = heightApp - paddingTop - myAppBar.preferredSize.height;
     return Scaffold(
-      appBar: myAppBar,
-      body: Container(
-          width: widthApp,
-          height: heightBody * 0.3,
-          color: Colors.grey,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              MyContainer(widthApp, heightBody),
-              MyContainer(widthApp, heightBody),
-              MyContainer(widthApp, heightBody),
-            ],
-          ),
-        )
-        );
-  }
-}
-
-class MyContainer extends StatelessWidget {
-      final double widthApp;
-      final double heightApp;
-    MyContainer(this.widthApp, this.heightApp);
-
-  @override
-  Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints){
-      return Container(
-      width: widthApp * 0.25,
-      height: constraints.maxHeight * 0.5,
-      color: Colors.amber,
-    );
-      }
+      appBar: AppBar(title: Text('Cuppertino')),
+      body: Center(
+        child: ElevatedButton(
+          // onPressed: () {
+          //   child:
+          //   showDialog(
+          //     context: context,
+          //     builder: (context) {
+          //       return Platform.isIOS
+          //           ? CupertinoAlertDialog(
+          //               title: Text("Delete Item"),
+          //               content: Text("Are u sore to delete this item?"),
+          //               actions: [
+          //                 TextButton(onPressed: () {}, child: Text("No")),
+          //                 TextButton(onPressed: () {}, child: Text("Yes")),
+          //               ],
+          //             )
+          //           : AlertDialog(
+          //               title: Text("Delete Item"),
+          //               content: Text("Are u sore to delete this item?"),
+          //               actions: [
+          //                 TextButton(onPressed: () {}, child: Text("No")),
+          //                 TextButton(onPressed: () {}, child: Text("Yes")),
+          //               ],
+          //             );
+          //     },
+          //   );
+          // },
+          // child: Text("Alert Dialog"),
+          onPressed: () {
+            Platform.isAndroid
+                ? showDatePicker(
+                    context: context,
+                    initialDate: DateTime.now(),
+                    firstDate: DateTime(1998),
+                    lastDate: DateTime(2050),
+                  )
+                : showCupertinoModalPopup(
+                    context: context,
+                    builder: (context) {
+                      return Container(
+                        height: MediaQuery.of(context).size.height * 0.4,
+                        color: Colors.white,
+                        child: CupertinoDatePicker(
+                          mode: CupertinoDatePickerMode.date,
+                        onDateTimeChanged: (datetime) {
+                          print(datetime);
+                        },
+                        initialDateTime: DateTime.now(),
+                      ),
+                      );
+                    },
+                  );
+          },
+           child: Text("Cupertino Date Time"),
+        ),
+                 
+      ),
     );
   }
 }
