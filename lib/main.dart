@@ -1,76 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:learn_flutter_1/providers/all_products.dart';
+import 'package:learn_flutter_1/screens/product_detail_screen.dart';
+import 'package:learn_flutter_1/screens/products_overview_screen.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(home: HomePage());
-  }
-}
-
-class HomePage extends StatefulWidget {
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  DateTime selectDate = DateTime.now();
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Date Picker')),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              selectDate.toString(),
-              style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 20),
-            OutlinedButton(
-              onPressed: () {
-                showDatePicker(
-                  context: context,
-                  initialDate: selectDate,
-                  firstDate: DateTime(1998),
-                  lastDate: DateTime(2029),
-                  // initialEntryMode: DatePickerEntryMode.input,
-                  // initialDatePickerMode: DatePickerMode.year,
-                  // selectableDayPredicate: (day) {
-                  //   if ((day.isAfter(
-                  //         DateTime.now().subtract(Duration(days: 9)))) &&
-                  //       (day.isBefore(DateTime.now().add(Duration(days: 10))))) {
-                  //     return true;
-                  //   }
-                  //   return false;
-                  // },
-
-                  helpText: "Help Text",
-                  cancelText: "Cancel Text",
-                  confirmText: "Confirm Text",
-                  fieldHintText: "Field Hint Text",
-                  fieldLabelText: "Field Label Text",
-                  // builder: (context, child) {
-                  //   return Theme(data: ThemeData.dark(), child: child);
-                  // },
-                ).then((value) {
-                  if (value != null) {
-                    setState(() {
-                      selectDate = value;
-                    });
-                  }
-                });
-              },
-              child: Text("Date Picker"),
-            ),
-          ],
+    return ChangeNotifierProvider(create: (context) => Products(),
+      child: MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'MyShop',
+      theme: ThemeData(
+        primarySwatch: Colors.indigo,
+        fontFamily: 'Lato',
+        colorScheme: ColorScheme.fromSwatch(
+          primarySwatch: Colors.indigo,
+        ).copyWith(
+          secondary: Colors.amber,
         ),
       ),
+      home: ProductsOverviewScreen(),
+      routes: {
+        ProductDetailScreen.routeName: (ctx) => ProductDetailScreen(),
+      },
+    ),
     );
   }
 }
