@@ -18,7 +18,7 @@ class Products with ChangeNotifier {
   );
 
   List<Product> get allProducts {
-    return [..._allProducts];
+    return _allProducts;
   }
 
   Product findById(productId) {

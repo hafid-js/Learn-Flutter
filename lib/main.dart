@@ -34,3 +34,20 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+
+// class ScreenSementara extends StatelessWidget {
+//   List<Text> myList = List.generate(50, (index) => Text("${index + 1}", style: TextStyle(fontSize: 35),));
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(),
+//       body: ListView(
+//         children: 
+//           [...myList,
+//           Container(width: 100, height: 100, color: Colors.green,)],
+//       ),
+//     );
+//   }
+// }
