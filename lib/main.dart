@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:learn_flutter_1/providers/all_products.dart';
+import 'package:learn_flutter_1/providers/cart.dart';
+import 'package:learn_flutter_1/screens/cart_screen.dart';
 import 'package:learn_flutter_1/screens/product_detail_screen.dart';
 import 'package:learn_flutter_1/screens/products_overview_screen.dart';
 import 'package:provider/provider.dart';
@@ -13,24 +15,27 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(create: (context) => Products(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => Cart()),
+        ChangeNotifierProvider(create: (context) => Products()),
+      ],
       child: MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'MyShop',
-      theme: ThemeData(
-        primarySwatch: Colors.indigo,
-        fontFamily: 'Lato',
-        colorScheme: ColorScheme.fromSwatch(
+        debugShowCheckedModeBanner: false,
+        title: 'MyShop',
+        theme: ThemeData(
           primarySwatch: Colors.indigo,
-        ).copyWith(
-          secondary: Colors.amber,
+          fontFamily: 'Lato',
+          colorScheme: ColorScheme.fromSwatch(
+            primarySwatch: Colors.indigo,
+          ).copyWith(secondary: Colors.amber),
         ),
+        home: ProductsOverviewScreen(),
+        routes: {
+          ProductDetailScreen.routeName: (ctx) => ProductDetailScreen(),
+          CartScreen.routeName: (ctx) => CartScreen(),
+        },
       ),
-      home: ProductsOverviewScreen(),
-      routes: {
-        ProductDetailScreen.routeName: (ctx) => ProductDetailScreen(),
-      },
-    ),
     );
   }
 }
