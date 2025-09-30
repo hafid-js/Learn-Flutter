@@ -4,11 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class Auth with ChangeNotifier {
-  
-
-  signup(String email, String password) async {
+  Future<void> signup(String email, String password) async {
     Uri url = Uri.parse(
-        "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBLO1OZ-Lil489qehnsTrguRm_jaCvaaQE");
+      "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBLO1OZ-Lil489qehnsTrguRm_jaCvaaQE",
+    );
     try {
       var response = await http.post(
         url,
@@ -19,16 +18,20 @@ class Auth with ChangeNotifier {
         }),
       );
 
-      print(json.decode(response.body));
+      var responseData = json.decode(response.body);
+
+      if (responseData['error'] != null) {
+        throw responseData['error']['message'];
+      }
     } catch (err) {
       throw (err);
     }
   }
 
-
-  login(String email, String password) async {
+  Future<void> login(String email, String password) async {
     Uri url = Uri.parse(
-        "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBLO1OZ-Lil489qehnsTrguRm_jaCvaaQE");
+      "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBLO1OZ-Lil489qehnsTrguRm_jaCvaaQE",
+    );
     try {
       var response = await http.post(
         url,
@@ -39,7 +42,11 @@ class Auth with ChangeNotifier {
         }),
       );
 
-      print(json.decode(response.body));
+      var responseData = json.decode(response.body);
+
+      if (responseData['error'] != null) {
+        throw responseData['error']['message'];
+      }
     } catch (err) {
       throw (err);
     }

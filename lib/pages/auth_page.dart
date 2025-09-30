@@ -19,19 +19,19 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   Duration get loginTime => const Duration(milliseconds: 2250);
 
-  Future<String?> _authUser(LoginData data) async {
-    debugPrint('Login -> Name: ${data.name}, Password: ${data.password}');
+  // Future<String?> _authUser(LoginData data) async {
+  //   debugPrint('Login -> Name: ${data.name}, Password: ${data.password}');
 
-    return Future.delayed(loginTime).then((_) {
-      if (!users.containsKey(data.name)) {
-        return 'User does not exist';
-      }
-      if (users[data.name] != data.password) {
-        return 'Password does not match';
-      }
-      return null;
-    });
-  }
+  //   return Future.delayed(loginTime).then((_) {
+  //     if (!users.containsKey(data.name)) {
+  //       return 'User does not exist';
+  //     }
+  //     if (users[data.name] != data.password) {
+  //       return 'Password does not match';
+  //     }
+  //     return null;
+  //   });
+  // }
 
   Future<String?> _authUserSignUp(SignupData data) async {
     debugPrint('Signup -> Name: ${data.name}, Password: ${data.password}');
@@ -44,8 +44,7 @@ class _LoginPageState extends State<LoginPage> {
         await Provider.of<myAuth.Auth>(context, listen: false).signup(name, password);
         return null; 
       } catch (error) {
-        debugPrint('Signup error: $error');
-        return 'Signup failed: $error';
+        return error.toString();
       }
     });
   }
@@ -61,8 +60,7 @@ class _LoginPageState extends State<LoginPage> {
         await Provider.of<myAuth.Auth>(context, listen: false).login(name, password);
         return null; 
       } catch (error) {
-        debugPrint('Login error: $error');
-        return 'Login failed: $error';
+        return error.toString();
       }
     });
   }
