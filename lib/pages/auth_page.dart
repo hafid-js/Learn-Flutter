@@ -34,7 +34,6 @@ class _LoginPageState extends State<LoginPage> {
   // }
 
   Future<String?> _authUserSignUp(SignupData data) async {
-    debugPrint('Signup -> Name: ${data.name}, Password: ${data.password}');
 
     final name = data.name ?? '';
     final password = data.password ?? '';
@@ -50,7 +49,6 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<String?> _authUserLogin(LoginData data) async {
-    debugPrint('Login -> Name: ${data.name}, Password: ${data.password}');
 
     final name = data.name ?? '';
     final password = data.password ?? '';
@@ -67,7 +65,6 @@ class _LoginPageState extends State<LoginPage> {
 
 
   Future<String?> _recoverPassword(String name) async {
-    debugPrint('Recover -> Name: $name');
 
     return Future.delayed(loginTime).then((_) {
       if (!users.containsKey(name)) {
@@ -85,9 +82,7 @@ class _LoginPageState extends State<LoginPage> {
       onSignup: _authUserSignUp,
       onRecoverPassword: _recoverPassword,
       onSubmitAnimationCompleted: () {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => HomePage()),
-        );
+        
       },
     );
   }

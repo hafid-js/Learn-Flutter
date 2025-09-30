@@ -4,6 +4,23 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class Auth with ChangeNotifier {
+
+  String _idToken = '';
+  String userId = '';
+  DateTime? _expiryDate;
+
+  bool get isAuth {
+    return token.isNotEmpty;
+  }
+
+  String get token {
+    if(_idToken != null && _expiryDate != null && _expiryDate!.isAfter(DateTime.now())) {
+      return _idToken;
+    } else {
+      return '';
+    }
+  }
+
   Future<void> signup(String email, String password) async {
     Uri url = Uri.parse(
       "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBLO1OZ-Lil489qehnsTrguRm_jaCvaaQE",
@@ -23,6 +40,17 @@ class Auth with ChangeNotifier {
       if (responseData['error'] != null) {
         throw responseData['error']['message'];
       }
+
+      _idToken = responseData['idToken'];
+      userId = responseData['localId'];
+      _expiryDate = DateTime.now().add(
+        Duration(
+          seconds: int.parse(
+            responseData['expiresIn'],
+          ),
+        ),
+      );
+      notifyListeners();
     } catch (err) {
       throw (err);
     }
@@ -47,6 +75,17 @@ class Auth with ChangeNotifier {
       if (responseData['error'] != null) {
         throw responseData['error']['message'];
       }
+
+       _idToken = responseData['idToken'];
+      userId = responseData['localId'];
+      _expiryDate = DateTime.now().add(
+        Duration(
+          seconds: int.parse(
+            responseData['expiresIn'],
+          ),
+        ),
+      );
+      notifyListeners();
     } catch (err) {
       throw (err);
     }

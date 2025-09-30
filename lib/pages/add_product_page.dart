@@ -12,17 +12,29 @@ class AddProductPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     void save(String title, String price) {
-      Provider.of<Products>(context, listen: false).addProduct(title, price).catchError((onError) {
-        return showDialog(context: context, builder: (context) {
-          return AlertDialog(
-            title: Text("Error Occured"),
-            content: Text("Error : $onError"),
-            actions: [
-            TextButton(onPressed: () => Navigator.pop(context), child: Text("OK"),)
-          ],);
-        });
-      });
-      
+      try {
+        Provider.of<Products>(
+          context,
+          listen: false,
+        ).addProduct(title, price).then((value) => Navigator.pop(context));
+      } catch (err) {
+        showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: Text("Error Occured"),
+              content: Text("Error : $err"),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: Text("OK"),
+                ),
+              ],
+            );
+          },
+        );
+      }
+      ;
     }
 
     return Scaffold(
@@ -75,12 +87,7 @@ class AddProductPage extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: () =>
                     save(titleController.text, priceController.text),
-                child: Text(
-                  "Save",
-                  style: TextStyle(
-                    fontSize: 18,
-                  ),
-                ),
+                child: Text("Save", style: TextStyle(fontSize: 18)),
                 style: ElevatedButton.styleFrom(
                   padding: EdgeInsets.symmetric(vertical: 15),
                   shape: RoundedRectangleBorder(
