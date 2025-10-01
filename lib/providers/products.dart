@@ -8,9 +8,11 @@ import '../models/product.dart';
 
 class Products with ChangeNotifier {
   String token = '';
+  String userId = '';
 
-  void updateData(tokenData){
+  void updateData(tokenData, uid){
     token = tokenData;
+    userId = uid;
     notifyListeners();
   }
 
@@ -32,6 +34,7 @@ class Products with ChangeNotifier {
           "price": price,
           "createdAt": dateNow.toString(),
           "updatedAt": dateNow.toString(),
+          "userId": userId,
         }),
       );
 
@@ -108,7 +111,7 @@ class Products with ChangeNotifier {
 
   Future<void> inisialData() async {
   Uri url = Uri.parse(
-      "$urlMaster/products.json?auth=$token");
+      "$urlMaster/products.json?auth=$token&orderBy=\"userId\"&equalTo=\"$userId\"");
 
   try {
     var response = await http.get(url);
