@@ -1,9 +1,11 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class Auth with ChangeNotifier {
+  Timer? _authTimer;
 
   String _idToken = '';
   String userId = '';
@@ -14,7 +16,9 @@ class Auth with ChangeNotifier {
   }
 
   String get token {
-    if(_idToken != null && _expiryDate != null && _expiryDate!.isAfter(DateTime.now())) {
+    if (_idToken != null &&
+        _expiryDate != null &&
+        _expiryDate!.isAfter(DateTime.now())) {
       return _idToken;
     } else {
       return '';
@@ -44,12 +48,9 @@ class Auth with ChangeNotifier {
       _idToken = responseData['idToken'];
       userId = responseData['localId'];
       _expiryDate = DateTime.now().add(
-        Duration(
-          seconds: int.parse(
-            responseData['expiresIn'],
-          ),
-        ),
+        Duration(seconds: int.parse(responseData['expiresIn'])),
       );
+      _autologout();
       notifyListeners();
     } catch (err) {
       throw (err);
@@ -76,18 +77,36 @@ class Auth with ChangeNotifier {
         throw responseData['error']['message'];
       }
 
-       _idToken = responseData['idToken'];
+      _idToken = responseData['idToken'];
       userId = responseData['localId'];
       _expiryDate = DateTime.now().add(
-        Duration(
-          seconds: int.parse(
-            responseData['expiresIn'],
-          ),
-        ),
+        Duration(seconds: int.parse(responseData['expiresIn'])),
       );
+      _autologout();
       notifyListeners();
     } catch (err) {
       throw (err);
     }
+  }
+
+  void logout() {
+    _idToken = '';
+    userId = '';
+    _expiryDate = null;
+
+    if (_authTimer != null) {
+      _authTimer!.cancel();
+      _authTimer = null;
+    }
+    notifyListeners();
+  }
+
+  void _autologout() {
+    if (_authTimer != null) {
+      _authTimer!.cancel();
+    }
+    final timeToExpiry = _expiryDate!.difference(DateTime.now()).inSeconds;
+    print(timeToExpiry);
+    _authTimer = Timer(Duration(seconds: timeToExpiry), logout);
   }
 }

@@ -5,6 +5,7 @@ import '../providers/products.dart';
 
 import '../pages/add_product_page.dart';
 import '../widgets/product_item.dart';
+import 'package:learn_flutter_1/providers/auth.dart' as myAuth;
 
 class HomePage extends StatefulWidget {
   static const route = "/home";
@@ -21,35 +22,36 @@ class _HomePageState extends State<HomePage> {
   void didChangeDependencies() {
     if (isInit) {
       isLoading = true;
-      Provider.of<Products>(context, listen: false).inisialData().then((value) {
-        setState(() {
-          isLoading = false;
-        });
-      }).catchError(
-        (err) {
-          print(err);
-          showDialog(
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                title: Text("Error Occured"),
-                content: Text(err.toString()),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      setState(() {
-                        isLoading = false;
-                      });
-                      Navigator.pop(context);
-                    },
-                    child: Text("Okay"),
-                  ),
-                ],
-              );
-            },
-          );
-        },
-      );
+      Provider.of<Products>(context, listen: false)
+          .inisialData()
+          .then((value) {
+            setState(() {
+              isLoading = false;
+            });
+          })
+          .catchError((err) {
+            print(err);
+            showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  title: Text("Error Occured"),
+                  content: Text(err.toString()),
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        setState(() {
+                          isLoading = false;
+                        });
+                        Navigator.pop(context);
+                      },
+                      child: Text("Okay"),
+                    ),
+                  ],
+                );
+              },
+            );
+          });
 
       isInit = false;
     }
@@ -61,6 +63,11 @@ class _HomePageState extends State<HomePage> {
     final prov = Provider.of<Products>(context);
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.logout),
+          onPressed: () =>
+              Provider.of<myAuth.Auth>(context, listen: false).logout(),
+        ),
         title: Text("All Products"),
         actions: [
           IconButton(
@@ -70,27 +77,18 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
       body: (isLoading)
-          ? Center(
-              child: CircularProgressIndicator(),
-            )
+          ? Center(child: CircularProgressIndicator())
           : (prov.allProduct.length == 0)
-              ? Center(
-                  child: Text(
-                    "No Data",
-                    style: TextStyle(
-                      fontSize: 25,
-                    ),
-                  ),
-                )
-              : ListView.builder(
-                  itemCount: prov.allProduct.length,
-                  itemBuilder: (context, i) => ProductItem(
-                    prov.allProduct[i].id,
-                    prov.allProduct[i].title,
-                    prov.allProduct[i].price,
-                    prov.allProduct[i].updatedAt!,
-                  ),
-                ),
+          ? Center(child: Text("No Data", style: TextStyle(fontSize: 25)))
+          : ListView.builder(
+              itemCount: prov.allProduct.length,
+              itemBuilder: (context, i) => ProductItem(
+                prov.allProduct[i].id,
+                prov.allProduct[i].title,
+                prov.allProduct[i].price,
+                prov.allProduct[i].updatedAt!,
+              ),
+            ),
     );
   }
 }

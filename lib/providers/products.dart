@@ -23,6 +23,7 @@ class Products with ChangeNotifier {
   List<Product> get allProduct => _allProduct;
 
   Future<void> addProduct(String title, String price) async {
+    _allProduct = [];
     Uri url = Uri.parse(
         "$urlMaster/products.json?auth=$token");
     DateTime dateNow = DateTime.now();
