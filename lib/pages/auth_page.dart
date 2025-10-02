@@ -82,7 +82,7 @@ class _LoginPageState extends State<LoginPage> {
       onSignup: _authUserSignUp,
       onRecoverPassword: _recoverPassword,
       onSubmitAnimationCompleted: () {
-        
+        Provider.of<myAuth.Auth>(context, listen: false).tempData();
       },
     );
   }
