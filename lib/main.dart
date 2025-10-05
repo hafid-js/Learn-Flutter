@@ -5,47 +5,13 @@ void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatefulWidget {
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  bool isDark = false;
-
-  final ThemeData dark = ThemeData.dark();
-
-  final ThemeData light = ThemeData.light();
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(create: (context) => CounterCubit()),
-        BlocProvider(create: (context) => ThemeBloc()),
-      ],
-      child: MultiBlocListener(listeners: [
-        BlocListener<CounterCubit, int>(listener: (context, state) {
-          if (state >= 10) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text("Lebih dari 10"),
-                  duration: Duration(milliseconds: 500),
-                ),
-              );
-            }
-            if(state % 1 == 0) {
-              setState(() {
-                isDark = !isDark;
-              });
-            }
-        }),
-      ],
-      child: BlocBuilder<ThemeBloc, bool>(builder: (context, state) => MaterialApp(
-        theme: state == isDark ? dark : light,
-        home: HomePage()),
-      )
-    )
+    return MaterialApp(
+      home: BlocProvider(create: (context) => CounterBloc(), child: HomePage()),
     );
   }
 }
@@ -56,37 +22,48 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        actions: [
-          IconButton(onPressed: () => context.read<ThemeBloc>().changeTheme(), icon: Icon(Icons.refresh))
-        ],
-      ),
+      appBar: AppBar(),
       body: Center(
-        child: BlocListener<CounterCubit, int>(
-          listener: (context, state) {
-            
+        child: BlocConsumer<CounterBloc, int>(
+          buildWhen: (previous, current) {
+            // print("prev : $previous --- curr : $current");
+            if(current > 5) {
+              return true;
+            }
+            return false;
           },
-          child: BlocBuilder<CounterCubit, int>(
-            builder: (context, state) =>
-                Text("$state", style: TextStyle(fontSize: 25)),
-          ),
+          listenWhen: (previous, current) {
+            print("curr : $current");
+            if(current > 10) {
+              return true;
+            }
+            return false;
+          },
+          listener: (context, state) {
+            if (state > 10) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text("Di atas 10 bro!"),
+                  duration: Duration(milliseconds: 300),
+                ),
+              );
+            }
+          },
+          builder: (context, state) {
+            return Text("Angka $state", style: TextStyle(fontSize: 35));
+          },
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => context.read<CounterCubit>().increment(),
+        onPressed: () => context.read<CounterBloc>().increment(),
+        child: Icon(Icons.add),
       ),
     );
   }
 }
 
-class CounterCubit extends Cubit<int> {
-  CounterCubit() : super(0);
+class CounterBloc extends Cubit<int> {
+  CounterBloc() : super(0);
 
   void increment() => emit(state + 1);
-}
-
-class ThemeBloc extends Cubit<bool> {
-  ThemeBloc() : super(false);
-
-  void changeTheme() => emit(!state);
 }
