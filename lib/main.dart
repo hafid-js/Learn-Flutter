@@ -25,25 +25,26 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: GestureDetector(
-          onTap: () {
-            setState(() {
-              click = !click;
-            });
-          },
-          child: AnimatedContainer(
-            duration: Duration(seconds: 2),
-            width: click ? 100 : 300,
-            height: click ? 500 : 100,
-            color: Colors.amber,
-            curve: Curves.bounceInOut,
-            alignment: click ? Alignment.centerRight : Alignment.topCenter,
-            child: Icon(
-              Icons.apple,
+        child: AnimatedContainer(
+          duration: Duration(seconds: 2),
+          width: 400,
+          height: 500,
+          color: Colors.amber,
+          child: AnimatedAlign(
+            alignment: click ? Alignment.topLeft : Alignment.bottomRight,
+            child: GestureDetector(
+              onTap: () {
+                setState(() {
+                  click = !click;
+                });
+              },
+              child: Icon(
+              Icons.ac_unit,
               size: 50,
             ),
+            ),
+            duration: Duration(seconds: 2),),
           ),
-        ),
       ),
     );
   }
