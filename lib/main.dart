@@ -20,32 +20,50 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  bool click = false;
+  bool click = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: AnimatedContainer(
-          duration: Duration(seconds: 2),
-          width: 400,
-          height: 500,
-          color: Colors.amber,
-          child: AnimatedAlign(
-            alignment: click ? Alignment.topLeft : Alignment.bottomRight,
-            child: GestureDetector(
-              onTap: () {
-                setState(() {
-                  click = !click;
-                });
-              },
-              child: Icon(
-              Icons.ac_unit,
-              size: 50,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              height: 100,
+              width: 350,
+              color: Colors.amber,
             ),
+            SizedBox(height: 10),
+            AnimatedCrossFade(
+              firstChild: Container(
+              height: 150,
+              width: 150,
+              color: Colors.red,
             ),
-            duration: Duration(seconds: 2),),
-          ),
+              secondChild: Container(
+              height: 350,
+              width: 50,
+              color: Colors.green,
+            ),
+              crossFadeState: click ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+              duration: Duration(
+                milliseconds: 800
+              )),
+            SizedBox(height: 10),
+             Container(
+              height: 150,
+              width: 250,
+              color: Colors.amber,
+            ),
+          ],
+        )
       ),
+      floatingActionButton: FloatingActionButton(onPressed: () {
+        setState(() {
+          click = !click;
+        });
+      }),
     );
   }
 }
