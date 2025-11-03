@@ -1,38 +1,29 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:learn_flutter_1/app/routes/app_pages.dart';
 
 import '../controllers/home_controller.dart';
 
 class HomeView extends GetView<HomeController> {
-  const HomeView({super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Home Page'), centerTitle: true),
-      body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: GridView.builder(
-          itemCount: 10,
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 3,
-            childAspectRatio: 1,
-            crossAxisSpacing: 10,
-            mainAxisSpacing: 10,
+      appBar: AppBar(title: const Text('HomeView'), centerTitle: true),
+      body: Center(
+        child: AnimatedBuilder(
+          animation: controller.animationC,
+          child: Container(
+            width: 100,
+            height: 100,
+            color: Colors.green,
+            child: const Center(child: Text('Whee!')),
           ),
-          itemBuilder: (context, index) {
-            return GestureDetector(
-              onTap: () => Get.toNamed(Routes.DETAIL, arguments: index + 500),
-              child: Hero(
-                tag: '${index + 500}',
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(100),
-                  child: Image.network(
-                    "https://picsum.photos/id/${index + 500}/1000",
-                  ),
-                ),
-              ),
+          builder: (_, ch) {
+            return Transform.scale(
+              scale: controller.animationC.value * 2.0 * pi,
+              child: ch,
             );
           },
         ),
