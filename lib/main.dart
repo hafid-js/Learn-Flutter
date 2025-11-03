@@ -5,38 +5,59 @@ void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatefulWidget {
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
-bool click = false;
-
-class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        body: Center(
-          // child: AnimatedContainer(
-          //   duration: Duration(milliseconds: 800),
-          //   width: 250,
-          //   height: 250,
-          //   color: Colors.amber.withValues(alpha: click ? 0.5 : 1.0),
-          // ),
-          child: AnimatedOpacity(
-            duration: Duration(milliseconds: 800),
-            opacity: click ? 0.2 : 1,
-            child: FlutterLogo(size: 250
-            )),
+    return MaterialApp(home: HomePage());
+  }
+}
+
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  bool click = false;
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(),
+
+      body: Center(
+        child: SizedBox(
+          width: 350,
+          height: 350,
+          child: Stack(
+            children: [
+              Container(
+                width: 350,
+                height: 350,
+                color: Colors.blue,
+                child: Center(child: Text("Hello", style: TextStyle(fontSize: 25),)),
+              ),
+              AnimatedPositioned(
+                curve: Curves.fastOutSlowIn,
+                top: click ? 100 : 150,
+                left: 100,
+                duration: Duration(seconds: 2),
+                child: Container(width: 150, height: 50, color: Colors.red),
+              ),
+            ],
+          ),
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            setState(() {
-              click = !click;
-            });
-          },
-        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          setState(() {
+            click = !click;
+          });
+        },
+        child: Icon(Icons.play_arrow),
       ),
     );
   }
