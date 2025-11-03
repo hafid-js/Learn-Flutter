@@ -10,24 +10,32 @@ class HomeView extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('HomeView'), centerTitle: true),
-      body: Center(
-        child: AnimatedBuilder(
-          animation: controller.animationC,
-          child: Container(
-            width: 100,
-            height: 100,
-            color: Colors.green,
-            child: const Center(child: Text('Whee!')),
-          ),
-          builder: (_, ch) {
-            return Transform.scale(
-              scale: controller.animationC.value * 2.0 * pi,
-              child: ch,
-            );
-          },
-        ),
-      ),
+      appBar: AppBar(title: Text('HomeView'), centerTitle: true),
+      body: Center(child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          BoxMuterMuter(controller.aniC),
+          SizedBox(height: 50),
+          BoxMuterMuter(controller.aniC),
+          SizedBox(height: 50),
+          BoxMuterMuter(controller.aniC),
+          SizedBox(height: 50),
+        ],
+      )),
+    );
+  }
+}
+
+class BoxMuterMuter extends AnimatedWidget {
+  final animation;
+  BoxMuterMuter(this.animation) : super(listenable: animation);
+
+  get progress => listenable as Animation<double>;
+  @override
+  Widget build(BuildContext context) {
+    return Transform.rotate(
+      angle: progress.value * pi * 0.25,
+      child: Container(width: 100, height: 100, color: Colors.amber),
     );
   }
 }
