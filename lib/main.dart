@@ -5,65 +5,39 @@ void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
+class MyApp extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(home: HomePage());
-  }
+  State<MyApp> createState() => _MyAppState();
 }
 
-class HomePage extends StatefulWidget {
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
+bool click = false;
 
-class _HomePageState extends State<HomePage> {
-  bool click = true;
+class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Container(
-              height: 100,
-              width: 350,
-              color: Colors.amber,
-            ),
-            SizedBox(height: 10),
-            AnimatedCrossFade(
-              firstChild: Container(
-              height: 150,
-              width: 150,
-              color: Colors.red,
-            ),
-              secondChild: Container(
-              height: 350,
-              width: 50,
-              color: Colors.green,
-            ),
-              crossFadeState: click ? CrossFadeState.showFirst : CrossFadeState.showSecond,
-              duration: Duration(
-                milliseconds: 800
-              )),
-            SizedBox(height: 10),
-             Container(
-              height: 150,
-              width: 250,
-              color: Colors.amber,
-            ),
-          ],
-        )
+    return MaterialApp(
+      home: Scaffold(
+        body: Center(
+          // child: AnimatedContainer(
+          //   duration: Duration(milliseconds: 800),
+          //   width: 250,
+          //   height: 250,
+          //   color: Colors.amber.withValues(alpha: click ? 0.5 : 1.0),
+          // ),
+          child: AnimatedOpacity(
+            duration: Duration(milliseconds: 800),
+            opacity: click ? 0.2 : 1,
+            child: FlutterLogo(size: 250
+            )),
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            setState(() {
+              click = !click;
+            });
+          },
+        ),
       ),
-      floatingActionButton: FloatingActionButton(onPressed: () {
-        setState(() {
-          click = !click;
-        });
-      }),
     );
   }
 }
