@@ -9,9 +9,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  lottie: ^3.3.2
   # flutter_bloc: ^9.1.1
   # get: ^4.7.2
-  avatar_glow: ^3.0.1
+ 
 
 dev_dependencies:
   flutter_test:
