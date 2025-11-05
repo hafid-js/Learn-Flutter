@@ -11,14 +11,9 @@ class HomeView extends GetView<HomeController> {
     return Scaffold(
       appBar: AppBar(title: const Text('HomeView'), centerTitle: true),
       body: Center(
-        child: DecoratedBoxTransition(
-          decoration: controller.decorationTween.animate(controller.animationC),
-          child: Container(
-            width: 200,
-            height: 200,
-            padding: const EdgeInsets.all(10),
-            child: const FlutterLogo(),
-          ),
+        child: FadeTransition(
+          opacity: controller.animation,
+          child: Container(width: 200, height: 200, color: Colors.red[900]),
         ),
       ),
     );
