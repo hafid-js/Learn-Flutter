@@ -21,22 +21,31 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(),
       body: Center(
-        child: ClipRect(
-
-          child: Align(
-            alignment: Alignment.topRight,
-            heightFactor: 0.75,
-            widthFactor: 0.5,
-            child: Container(
-              color: Colors.amber,
-              child: 
-              FlutterLogo(
-          size: 200,
+        child: ClipPath(
+          clipper: MyClipper(),
+          child: Container(color: Colors.grey, child: FlutterLogo(size: 200)),
         ),
-            )
-          ),
-        )
       ),
-      );
+    );
   }
+}
+
+class MyClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    Path path = Path();
+    path.lineTo(0, size.height); // potong dari 0.00 sampai 0.200
+    path.lineTo(size.width * 0.5, size.height);
+    path.lineTo(size.width, size.height * 0.5);
+    path.lineTo(size.width, 0.5);
+    path.close();
+
+    return path;
+  }
+
+  @override
+  bool shouldReclip(covariant CustomClipper<Path> oldClipper) {
+    return false;
+  }
+  
 }
