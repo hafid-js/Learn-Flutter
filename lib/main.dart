@@ -33,12 +33,16 @@ class HomePage extends StatelessWidget {
 class MyClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
-    Path path = Path();
-    path.lineTo(0, size.height); // potong dari 0.00 sampai 0.200
-    path.lineTo(size.width * 0.5, size.height);
-    path.lineTo(size.width, size.height * 0.5);
-    path.lineTo(size.width, 0.5);
-    path.close();
+       var controlPoint1 = Offset(50, size.height - 100);
+    var controlPoint2 = Offset(size.width - 50, size.height);
+    var endPoint = Offset(size.width, size.height - 50);
+
+    Path path = Path()
+      ..moveTo(size.width / 2, 0)
+      ..lineTo(0, size.height - 50)
+      ..cubicTo(controlPoint1.dx, controlPoint1.dy, controlPoint2.dx,
+          controlPoint2.dy, endPoint.dx, endPoint.dy)
+      ..close();
 
     return path;
   }
@@ -47,5 +51,4 @@ class MyClipper extends CustomClipper<Path> {
   bool shouldReclip(covariant CustomClipper<Path> oldClipper) {
     return false;
   }
-  
 }
