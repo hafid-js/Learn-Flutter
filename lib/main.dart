@@ -21,15 +21,22 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(),
       body: Center(
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(1500),
-        child: Container(
-          width: 250,
-          height: 500,
-          color: Colors.blue,
+        child: ClipRect(
+
+          child: Align(
+            alignment: Alignment.topRight,
+            heightFactor: 0.75,
+            widthFactor: 0.5,
+            child: Container(
+              color: Colors.amber,
+              child: 
+              FlutterLogo(
+          size: 200,
         ),
+            )
+          ),
+        )
       ),
-      )
-    );
+      );
   }
 }
