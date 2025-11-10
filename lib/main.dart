@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 
 void main() {
@@ -19,45 +21,85 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
-      body: Center(
-        child: ClipPath(
-          clipper: MyClipper(),
-          child: Container(color: Colors.grey, child: FlutterLogo(size: 200)),
-        ),
+      body: Stack(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('images/image/image.png'),
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+          Center(
+            child: Container(
+              height: 250,
+              child: ListView.separated(
+                scrollDirection: Axis.horizontal,
+                separatorBuilder: (context, index) => SizedBox(width: 20,),
+                itemCount: 10,
+                itemBuilder: (context, index) => ClipRRect(
+                  borderRadius: BorderRadius.circular(30),
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: 5, sigmaY: 2),
+                    child: Container(
+                      width: 350,
+                      height: 250,
+                      decoration: BoxDecoration(
+                        color: Colors.blue.withAlpha(20),
+                        borderRadius: BorderRadius.circular(30),
+                        border: Border.all(color: Colors.white, width: 1),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Container(
+                              margin: EdgeInsets.only(left: 50),
+                              width: 75,
+                              child: Image.asset('images/logo/chip.png'),
+                            ),
+                          ),
+                          Text(
+                            "7532 2345 6675 8899",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 27,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(20),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "KHAFID",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Container(
+                                  width: 75,
+                                  child: Image.asset(
+                                    'images/logo/mastercard.png',
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
-  }
-}
-
-class MyClipper extends CustomClipper<Path> {
-  @override
-  Path getClip(Size size) {
-    double radius = 20;
-    Path path = Path()
-      ..moveTo(radius, 0)
-      ..lineTo(size.width - radius, 0)
-      ..arcToPoint(Offset(size.width, radius))
-      ..lineTo(size.width, size.height - radius)
-      ..arcToPoint(
-        Offset(size.width - radius, size.height),
-        radius: Radius.circular(radius),
-      )
-      ..lineTo(radius, size.height)
-      ..arcToPoint(
-        Offset(0, size.height - radius),
-        radius: Radius.circular(radius),
-        clockwise: false,
-      )
-      ..lineTo(0, radius)
-      ..arcToPoint(Offset(radius, 0), radius: Radius.elliptical(40, 20))
-      ..close();
-
-    return path;
-  }
-
-  @override
-  bool shouldReclip(covariant CustomClipper<Path> oldClipper) {
-    return false;
   }
 }
