@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -11,45 +12,95 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: HomePage());
+    return MaterialApp(home: CarouselWithIndicatorDemo());
   }
 }
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+class CarouselWithIndicatorDemo extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return _CarouselWithIndicatorState();
+  }
+}
+
+class _CarouselWithIndicatorState extends State<CarouselWithIndicatorDemo> {
+  int _current = 0;
+  final CarouselSliderController _controller = CarouselSliderController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(backgroundColor: Colors.green),
-      body: Center(
-        child: Container(
-          width: 250,
-          height: 250,
-          child: CustomPaint(painter: MyPainter()),
+      appBar: AppBar(title: Text('Carousel with indicator controller demo')),
+      body: Column(children: [
+        Expanded(
+          child: CarouselSlider(
+            items: imageSliders,
+            carouselController: _controller,
+            options: CarouselOptions(
+                autoPlay: true,
+                enlargeCenterPage: true,
+                aspectRatio: 2.0,
+                onPageChanged: (index, reason) {
+                  setState(() {
+                    _current = index;
+                  });
+                }),
+          ),
         ),
-      ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: imgList.asMap().entries.map((entry) {
+            return GestureDetector(
+              onTap: () => _controller.animateToPage(entry.key),
+              child: Container(
+                width: 12.0,
+                height: 12.0,
+                margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+                decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: (Theme.of(context).brightness == Brightness.dark
+                            ? Colors.white
+                            : Colors.black)
+                        .withOpacity(_current == entry.key ? 0.9 : 0.4)),
+              ),
+            );
+          }).toList(),
+        ),
+      ]),
     );
   }
 }
-
-class MyPainter extends CustomPainter {
   @override
-  void paint(Canvas canvas, Size size) {
-
-    var center = Offset(size.width / 2, size.height / 2);
-
-    Paint linePaint = Paint()
-      ..color = Colors.blue
-      ..strokeWidth = 30
-      ..strokeCap = StrokeCap.round;
-
-          canvas.drawCircle(center, size.width / 2, linePaint);
-    // canvas.drawLine(Offset(0, 0), Offset(0, size.height), linePaint);
-    //  canvas.drawLine(Offset(0, size.height), Offset(size.width, 0), linePaint);
-    //  canvas.drawLine(Offset(size.width, 0), Offset(0, 0), linePaint);
+  Widget build(BuildContext context) {
+    return ValueListenableBuilder(
+      builder: (context, value, g) {
+        return MaterialApp(
+          initialRoute: '/',
+          darkTheme: ThemeData.dark(),
+          themeMode: ThemeMode.values.toList()[value as int],
+          debugShowCheckedModeBanner: false,
+          routes: {
+            '/': (ctx) => CarouselDemoHome(),
+            '/basic': (ctx) => BasicDemo(),
+            '/nocenter': (ctx) => NoCenterDemo(),
+            '/image': (ctx) => ImageSliderDemo(),
+            '/complicated': (ctx) => ComplicatedImageDemo(),
+            '/enlarge': (ctx) => EnlargeStrategyDemo(),
+            '/manual': (ctx) => ManuallyControlledSlider(),
+            '/noloop': (ctx) => NoonLoopingDemo(),
+            '/vertical': (ctx) => VerticalSliderDemo(),
+            '/fullscreen': (ctx) => FullscreenSliderDemo(),
+            '/ondemand': (ctx) => OnDemandCarouselDemo(),
+            '/indicator': (ctx) => CarouselWithIndicatorDemo(),
+            '/prefetch': (ctx) => PrefetchImageDemo(),
+            '/reason': (ctx) => CarouselChangeReasonDemo(),
+            '/position': (ctx) => KeepPageviewPositionDemo(),
+            '/multiple': (ctx) => MultipleItemDemo(),
+            '/zoom': (ctx) => EnlargeStrategyZoomDemo(),
+          },
+        );
+      },
+      valueListenable: themeMode,
+    );
   }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
