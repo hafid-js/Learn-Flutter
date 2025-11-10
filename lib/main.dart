@@ -21,85 +21,35 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('images/image/image.png'),
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-          Center(
-            child: Container(
-              height: 250,
-              child: ListView.separated(
-                scrollDirection: Axis.horizontal,
-                separatorBuilder: (context, index) => SizedBox(width: 20,),
-                itemCount: 10,
-                itemBuilder: (context, index) => ClipRRect(
-                  borderRadius: BorderRadius.circular(30),
-                  child: BackdropFilter(
-                    filter: ImageFilter.blur(sigmaX: 5, sigmaY: 2),
-                    child: Container(
-                      width: 350,
-                      height: 250,
-                      decoration: BoxDecoration(
-                        color: Colors.blue.withAlpha(20),
-                        borderRadius: BorderRadius.circular(30),
-                        border: Border.all(color: Colors.white, width: 1),
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: Container(
-                              margin: EdgeInsets.only(left: 50),
-                              width: 75,
-                              child: Image.asset('images/logo/chip.png'),
-                            ),
-                          ),
-                          Text(
-                            "7532 2345 6675 8899",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 27,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(20),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  "KHAFID",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                Container(
-                                  width: 75,
-                                  child: Image.asset(
-                                    'images/logo/mastercard.png',
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ],
+      appBar: AppBar(backgroundColor: Colors.green),
+      body: Center(
+        child: Container(
+          width: 250,
+          height: 250,
+          child: CustomPaint(painter: MyPainter()),
+        ),
       ),
     );
   }
+}
+
+class MyPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+
+    var center = Offset(size.width / 2, size.height / 2);
+
+    Paint linePaint = Paint()
+      ..color = Colors.blue
+      ..strokeWidth = 30
+      ..strokeCap = StrokeCap.round;
+
+          canvas.drawCircle(center, size.width / 2, linePaint);
+    // canvas.drawLine(Offset(0, 0), Offset(0, size.height), linePaint);
+    //  canvas.drawLine(Offset(0, size.height), Offset(size.width, 0), linePaint);
+    //  canvas.drawLine(Offset(size.width, 0), Offset(0, 0), linePaint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
