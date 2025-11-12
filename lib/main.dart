@@ -18,50 +18,63 @@ class HomePage extends StatelessWidget {
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
-            backgroundColor: Colors.blue,
+            pinned: true,
             expandedHeight: 120,
-            floating: true,
             flexibleSpace: FlexibleSpaceBar(
-              title: Text("Silver List"),
               background: FlutterLogo(),
+              title: Text("SliverToBox"),
             ),
           ),
-
           // SliverList(
-          //   delegate: SliverChildBuilderDelegate((ctx, index) {
-          //     return ListTile(
-          //       leading: CircleAvatar(),
-          //       title: Text("Data ke - ${index + 1}"),
-          //     );
-          //   }, childCount: 20),
-          // ),
-          // SliverList(delegate: SliverChildListDelegate.fixed(
-          //   [
-          //     Container(
-          //     height: 100,
-          //     color: Colors.green[600],
+          //   delegate: SliverChildBuilderDelegate(
+          //     (context, index) => Column(
+          //       children: [
+          //         Container(
+          //           width: 150,
+          //           height: 150,
+          //           color: Colors.amber,
+          //         ),
+          //         Container(
+          //           width: 150,
+          //           height: 150,
+          //           color: Colors.red,
+          //         )
+          //       ],
+          //     ),
+          //     childCount: 2
           //   ),
-          //   Container(
-          //     height: 100,
-          //     color: Colors.pink[600],
-          //   )
-          //   ]
-          // ))
-
-          // SliverFixedExtentList(delegate: SliverChildBuilderDelegate(
-          //   (ctx, index) {
-          //     return Container(color: Colors.amber[100 * (index % 9)]);
-          //   }, childCount: 9
-          // ), itemExtent: 200)
-          SliverPrototypeExtentList(
-            delegate: SliverChildBuilderDelegate((ctx, index) {
-              return Container(color: Colors.amber[900]);
-            }, childCount: 1),
-            prototypeItem: Padding(
-              padding: const EdgeInsets.all(20),
-              child: Text("Halo"),
+          // ),
+          SliverToBoxAdapter(
+            child: Container(
+              height: 400,
+              color: Colors.grey,
+              child: ListView(
+                padding: EdgeInsets.all(0),
+                  children: [
+                    Container(
+                      width: 150,
+                      height: 150,
+                      color: Colors.amber,
+                    ),
+                    Container(
+                      width: 150,
+                      height: 150,
+                      color: Colors.red,
+                    ),
+                    Container(
+                      width: 150,
+                      height: 150,
+                      color: Colors.green,
+                    ),
+                    Container(
+                      width: 150,
+                      height: 150,
+                      color: Colors.blue,
+                    )
+                  ],
+                ),
             ),
-          ),
+          )
         ],
       ),
     );
